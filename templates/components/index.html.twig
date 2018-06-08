@@ -1,17 +1,19 @@
 {% extends "base.html.twig" %}
 {% block body %}
-<h1 class="mt-4">Hello Readers!</h1>
+<h1 class="my-4">Hello Readers!</h1>
 {% for post in posts %}
-<div>
-    <a href={{ "/post/" ~ post.id }}>
-        <h3>{{ post.title }}</h3>
-    </a>
-    <p>{{ post.body }}</p>
-    <p>{{ post.date|date('Y-m-d') }}</p>
+<div class="card mb-2">
+    <div class="card-body">
+        <a class="card-link" href={{ "/post/" ~ post.id }}>
+            <h5 class="card-title">{{ post.title }}</h5>
+        </a>
+        <p class="card-text">{{ post.body }}</p>
+        <p class="card-subtitle text-muted">{{ post.date|date('Y-m-d') }}</p>
+    </div>
 </div>
 {% endfor %}
 <nav aria-label="Page navigation example">
-    <ul class="pagination">
+    <ul class="pagination justify-content-center">
         <li class="page-item">
             <a class="page-link" href="/" tabindex="-1">Previous</a>
         </li>

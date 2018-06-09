@@ -43,6 +43,11 @@ class PostRepository extends ServiceEntityRepository
             ->select('count(p.id)')
             ->getQuery()
             ->getSingleScalarResult();
+	
+	// incase table is empty
+	if($qb == 0) {
+	    $qb = 1;
+	}
 
         return ceil($qb/5);
     }

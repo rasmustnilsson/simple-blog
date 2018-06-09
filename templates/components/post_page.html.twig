@@ -1,20 +1,33 @@
-{% extends "base.html.twig" %} {% block body %}
+{% extends "base.html.twig" %}
+
+{% block body %}
+
 <h1 class="mt-4 mb-0">{{ post.title }}</h1>
 <p><small>{{ post.date|date('Y-m-d') }}</small></p>
 <p>{{ post.body }}</p>
 <hr>
-<h4 class="pb-2">Write a comment!</h1>
+<h4 class="pb-2">Write a comment!</h4>
+
+{# inserts form #}
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
 
 {% for comment in comments %}
 <div class="col-sm-8 card my-2">
-    <div class="card-body">
+    <div class="card-body pl-4">
+        {# adds profile picture #}
+        <div class="profile-picture"></div>
         <h6 class="card-title">{{ comment.username }}</h6>
         <p class="card-text">{{ comment.body }}</p>
         <p class="card-text text-muted">{{ comment.date|date('Y-m-d') }}</p>
     </div>
 </div>
 {% endfor %}
+
+{% endblock %}
+
+{# puts post title in window title #}
+{% block title %}
+    {{ post.title }}
 {% endblock %}

@@ -20,15 +20,21 @@ class DefaultController extends Controller
      * @Route("/", name="front_page")
      * @Route("/page/{pageCount}")
      */
-    public function index($pageCount = 1)
+    public function index($pageCount = 1) // default page is 1
     {
         $posts = $this->getDoctrine()
-        ->getRepository(Post::class)
-        ->getPosts($pageCount);
+            ->getRepository(Post::class)
+            ->getPosts($pageCount);
 
-        return $this->render('components/index.html.twig',
-            ['posts' => $posts,'pageCount' => $pageCount]
-        );
+        $maxPageCount = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->getMaxPageCount();
+
+        return $this->render('components/index.html.twig', [
+            'posts' => $posts,
+            'pageCount' => $pageCount,
+            'maxPageCount' => $maxPageCount
+        ]);
     }
 
 
@@ -49,6 +55,7 @@ class DefaultController extends Controller
             return new Response("Post doesn't exist");
         }
 
+        // builds a new comment form
         $comment = new comment();
         $form = $this->createFormBuilder($comment)
             ->add('username', TextType::class, [
@@ -69,26 +76,28 @@ class DefaultController extends Controller
 
         $form->handleRequest($request);
 
-        // submits the form to the database and redirects
+        // submits the form to the database
         if ($form->isSubmitted() && $form->isValid()) {
             $comment = $form->getData();
+            // adds date
             $comment->setDate(new \DateTime());
+            // adds parent post
             $comment->setHostid($id);
 
+            // puts comment in database
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
 
+            // redirects to same route
             return $this->redirect("/post/".$id);
         }
         
-        return $this->render('components/post_page.html.twig',
-            [
-                'post' => $post,
-                'comments' => $comments,
-                'form' => $form->createView()
-            ]
-        );
+        return $this->render('components/post_page.html.twig', [
+            'post' => $post,
+            'comments' => $comments,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -96,7 +105,7 @@ class DefaultController extends Controller
      */
     public function createPost(Request $request)
     {
-        // builds a form
+        // builds a new post form
         $post = new Post();
         $form = $this->createFormBuilder($post)
             ->add('title', TextType::class, [
@@ -120,17 +129,22 @@ class DefaultController extends Controller
         // submits the form to the database and redirects
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
+
+            // adds date
             $post->setDate(new \DateTime());
 
+            // puts post in database
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
 
+            // redirects to frontpage
             return $this->redirectToRoute('front_page');
         }
 
-        return $this->render('components/create_post_page.html.twig',
-        [ 'form' => $form->createView() ]);
+        return $this->render('components/create_post_page.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }
 

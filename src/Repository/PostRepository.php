@@ -36,4 +36,15 @@ class PostRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
+    public function getMaxPageCount($pageCount = 1)
+    {
+        // gets max page for pagination
+        $qb = $this->createQueryBuilder('p')
+            ->select('count(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return ceil($qb/5);
+    }
+
 }

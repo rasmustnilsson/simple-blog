@@ -4,16 +4,16 @@ Built on symfony.
 
 ## Requrements
 
-  * PHP 7.2+ (php7.2-xml, php-mysql + common modules)
+  * PHP 7.2+ (php-xml, php-mysql)
   * MySQL
   * Composer
 
 ## Project setup
 
 ```sh
-$ git clone
+$ git clone https://github.com/tachnik/simple-blog
 $ cd simple-blog
-$ composer require symfony/web-server-bundle --dev
+$ composer install
 ```
 
 ## Database setup
@@ -38,7 +38,10 @@ CREATE TABLE comment (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT 
 INSERT INTO `post` (`id`, `title`, `body`, `date`) VALUES (NULL, [TITLE], [BODY], [DATE ex('2018-06-08 00:00:00'));
 INSERT INTO `comment` (`id`, `username`, `body`, `date`, `hostid`) VALUES (NULL, [USERNAME], [BODY], [DATE ex('2018-06-08 00:00:00'), [ID_OF_PARENT_POST]);
 ```
-#### run server with php bin/console server:run
+
+## Run
+default runs on localhost:8000
+
 ```sh
 $ php bin/console server:run
 ```

@@ -33,7 +33,7 @@ CREATE TABLE post (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, 
 CREATE TABLE comment (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, body VARCHAR(1024) NOT NULL, date DATETIME NOT NULL, hostid INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 ```
 
-#### Dummy posts and comments can be created by (posts can also be created at /createPost):
+#### Dummy posts and comments can be created with (posts and comments can also be created at /createPost and /post/{id} respectively):
 ```sql
 INSERT INTO `post` (`id`, `title`, `body`, `date`) VALUES (NULL, [TITLE], [BODY], [DATE ex('2018-06-08 00:00:00'));
 INSERT INTO `comment` (`id`, `username`, `body`, `date`, `hostid`) VALUES (NULL, [USERNAME], [BODY], [DATE ex('2018-06-08 00:00:00'), [ID_OF_PARENT_POST]);

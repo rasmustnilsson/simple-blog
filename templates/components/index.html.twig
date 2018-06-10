@@ -1,6 +1,9 @@
 {% extends "base.html.twig" %}
 {% block body %}
 <h1 class="my-4">Hello Readers!</h1>
+{% if not posts %}
+<p class="text-center">no posts have been made</p>
+{% endif %}
 {% for post in posts %}
 <div class="card mb-2">
     <div class="card-body">

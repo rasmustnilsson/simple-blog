@@ -32,9 +32,9 @@ class Comment
     private $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
      */
-    private $hostid;
+    private $parent_post;
 
     public function getId()
     {
@@ -77,14 +77,14 @@ class Comment
         return $this;
     }
 
-    public function getHostid(): ?int
+    public function getParentPost(): ?Post
     {
-        return $this->hostid;
+        return $this->parent_post;
     }
 
-    public function setHostid(int $hostid): self
+    public function setParentPost(?Post $parent_post): self
     {
-        $this->hostid = $hostid;
+        $this->parent_post = $parent_post;
 
         return $this;
     }

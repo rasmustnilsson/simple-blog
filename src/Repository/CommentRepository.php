@@ -18,19 +18,4 @@ class CommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Comment::class);
     }
-
-    /**
-     * params id
-     * @return Comment[]
-     */
-    public function getComments($id): array
-    {
-        // gets posts for specific page
-        $qb = $this->createQueryBuilder('c')
-            ->where('c.hostid = '. $id)
-            ->orderBy('c.id', 'DESC')
-            ->getQuery();
-
-        return $qb->execute();
-    }
 }

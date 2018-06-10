@@ -43,13 +43,17 @@ class DefaultController extends Controller
      */
     public function post(Request $request, $id = null)
     {
+        // if url doesn't have an id
+        if($id == null) return $this->redirectToRoute('front_page');
         $post = $this->getDoctrine()
             ->getRepository(Post::class)
             ->find($id);
 
+        // fetches comments
         $comments = $this->getDoctrine()
-            ->getRepository(Comment::class)
-            ->getComments($id);
+             ->getRepository(Post::class)
+             ->find($id)
+             ->getComments();
 
         if($post == null) {
             return new Response("Post doesn't exist");
@@ -82,11 +86,14 @@ class DefaultController extends Controller
             // adds date
             $comment->setDate(new \DateTime());
             // adds parent post
-            $comment->setHostid($id);
+            $comment->setParentPost($post);
+            // adds comment to post
+            $post->addComment($comment);
 
             // puts comment in database
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
+            $entityManager->persist($post);
             $entityManager->flush();
 
             // redirects to same route
@@ -129,10 +136,8 @@ class DefaultController extends Controller
         // submits the form to the database and redirects
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
-
             // adds date
             $post->setDate(new \DateTime());
-
             // puts post in database
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
